@@ -1,0 +1,151 @@
+{
+	"info": {
+		"_postman_id": "7761134a-906c-4d49-b59a-6a6cb4322eea",
+		"name": "TickTick",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Project",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/project",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"project"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Project Data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/project/:project_id/data",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"project",
+						":project_id",
+						"data"
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/project/:project_id/task/:task_id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"project",
+						":project_id",
+						"task",
+						":task_id"
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": ""
+						},
+						{
+							"key": "task_id",
+							"value": "685d1acf3a589346d296e70c"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "useBrowser",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "client_authentication",
+				"value": "body",
+				"type": "string"
+			},
+			{
+				"key": "scope",
+				"value": "tasks:read tasks:write",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "https://ticktick.com/oauth/token",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "https://ticktick.com/oauth/authorize",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "{{client_id}}",
+				"type": "string"
+			},
+			{
+				"key": "clientSecret",
+				"value": "{{client_secret}}",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "ticktick-token",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
