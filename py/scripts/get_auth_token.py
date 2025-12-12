@@ -1,15 +1,17 @@
 import os
+import webbrowser
 from aiohttp import web, ClientSession
 from aiohttp.web_runner import GracefulExit
 from asyncio import Event
 from yarl import URL
 from uuid import uuid4
 import base64
+from datetime import timedelta
 
 print("Starting script")
 client_id = os.environ.get("CLIENT_ID")
-
 client_secret = os.environ.get("CLIENT_SECRET")
+
 if not client_id:
     raise EnvironmentError("CLIENT_ID must be set")
 if not client_secret:
@@ -62,7 +64,10 @@ async def login(request):
             print(await response.text())
             js = await response.json()
             access_token = js["access_token"]
-            print(f"Token: {access_token}")
+            expires_in = js["expires_in"]
+
+            t = timedelta(seconds=expires_in)
+            print(f"Your access token is '{access_token}' and is valid for {t}")
 
     raise GracefulExit()
     request.app['shutdown_event'].set()
@@ -78,9 +83,11 @@ app.add_routes([
 
 if __name__ == '__main__':
     print(f"The server is starting, please visit http://0.0.0.0:8080/auth in your browser and proceed with authentication")
+    url = "http://localhost:8080/auth"
+    webbrowser.open(url, new=0, autoraise=True)
     app["shutdown_event"] = Event()
 
-    web.run_app(app)
+    web.run_app(app, print=None)
 
     print("Ending script")
     
