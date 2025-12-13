@@ -1,19 +1,22 @@
-from fastapi import FastAPI
 from settings import Settings
+from aiohttp import web
 
+app = web.Application()
 settings = Settings()
-app = FastAPI()
 
 
-@app.get("/")
-async def root():
-    return dict(message="Ok")
+# @app.get("/")
+async def root(request):
+    return web.json_response(dict(hi="haha"))
+    # return web.Response(text="yay")
 
 
-@app.post("/")
-async def routine():
-    return dict(message="Ok")
-    # async with httpx.AsyncClient() as client:
-    #     tasks = [client.get("https://api.example.com/data") for _ in range(3)]
-    #     responses = await asyncio.gather(*tasks)
-    # return [r.json() for r in responses]
+# @app.post("/")
+async def routine(request):
+    return web.Response(text="yay")
+
+
+app.add_routes([web.get("/", root), web.post("/", routine)])
+
+if __name__ == "__main__":
+    web.run_app(app)
