@@ -1,5 +1,6 @@
 use std::env;
 
+use ::tokio;
 use dotenv::dotenv;
 use futures::future::join_all;
 use std::sync::Arc;
@@ -36,8 +37,11 @@ async fn read_actionable(project: &Project) -> Result<Actionability, TickTickErr
     }
 }
 
-#[tokio::main]
-async fn main() -> Result<(), ()> {
+// fn main() {
+//     println!("fuck you")
+// }
+
+async fn run_ticktick_actionable() -> Result<(), ()> {
     println!("Collecting environment");
     dotenv().ok();
     let key: String = env::var("API_KEY").unwrap();
@@ -99,5 +103,22 @@ async fn main() -> Result<(), ()> {
         .collect();
     join_all(actions_futures).await;
 
+    Ok(())
+}
+
+fn main() -> Result<(), ()> {
+    // Manually build a single-threaded runtime (new_current_thread)
+    // This avoids the resource-heavy auto-detection and thread-spawning
+    // that was crashing the container.
+    println!("Starting...");
+    let rt = tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .expect("FATAL: Failed to initialize single-threaded Tokio runtime. Check container resource limits.");
+
+    println!("Setting up runtime");
+    // Block on the main async logic
+    rt.block_on(run_ticktick_actionable());
+    println!("Finished!");
     Ok(())
 }

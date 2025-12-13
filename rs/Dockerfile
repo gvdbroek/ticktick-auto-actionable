@@ -1,1 +1,23 @@
-FROM rust:alpine3.23
+FROM rust:1-bullseye as builder
+
+WORKDIR /app
+
+COPY Cargo.toml Cargo.lock ./
+RUN mkdir src && echo "fn main() {}" > src/main.rs
+RUN cargo build --release
+
+COPY ./src ./src
+RUN cargo build --release
+
+# FROM rust:1-slim-bullseye
+FROM debian:bullseye-slim 
+WORKDIR /app
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        libssl1.1 \
+        ca-certificates \
+        && \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=builder /app/target/release/ .
+CMD ["./ticktick-actionable"]
