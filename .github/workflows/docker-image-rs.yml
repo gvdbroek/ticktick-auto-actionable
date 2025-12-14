@@ -37,7 +37,7 @@ jobs:
           echo "sha_short=$SHA_SHORT" >> $GITHUB_OUTPUT
 
           # Define the full image name
-          IMAGE_NAME="ghcr.io/${{ github.repository }}/rust-app"
+          IMAGE_NAME="ghcr.io/gvdbroek/ticktick-actionable"
           echo "image_name=$IMAGE_NAME" >> $GITHUB_OUTPUT
 
       - name: 🏗️ Build and Push Docker Image
