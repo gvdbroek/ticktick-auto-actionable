@@ -26,11 +26,11 @@ These can be combined (e.g. `#next` + `#waiting` = literally blocked, no action 
 
 ### 1. Get a TickTick API key
 
-Load `gcp/TickTick.postman_collection.json` into Postman and set up three environment variables: `base_url`, `client_id`, `client_secret`. Request a new token through the OAuth flow - the access token is valid for ~1 year.
+Load `archive/gcp/TickTick.postman_collection.json` into Postman and set up three environment variables: `base_url`, `client_id`, `client_secret`. Request a new token through the OAuth flow - the access token is valid for ~1 year.
 
 ### 2. Configure
 
-Create a `.env` file in `rs/`:
+Create a `.env` file in the project root:
 
 ```
 API_KEY=your_ticktick_access_token
@@ -47,7 +47,6 @@ docker run --env API_KEY=your_token mcbuffington/ticktick-actionable
 #### From source
 
 ```sh
-cd rs
 cargo run --release
 ```
 
@@ -56,12 +55,11 @@ Set up a cron job or scheduler to run it periodically.
 ## Project structure
 
 ```
-rs/          - Rust implementation (active)
-gcp/         - Original Python version (deployed to GCP Cloud Run)
-py/          - Python rewrite (incomplete)
+src/         - Rust source code
+archive/     - Deprecated Python implementations (gcp/, py/)
 .github/     - CI/CD workflow
 ```
 
 ## CI/CD
 
-Pushes to `main` that touch `rs/**` trigger a GitHub Actions workflow that builds the Docker image and pushes it to Docker Hub as `mcbuffington/ticktick-actionable`.
+Pushes to `main` that touch `src/`, `Cargo.*`, or `Dockerfile` trigger a GitHub Actions workflow that builds the Docker image and pushes it to Docker Hub as `mcbuffington/ticktick-actionable`.
